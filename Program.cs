@@ -10,8 +10,8 @@ namespace AdventOfCode
             var list = ReadFileAsStringList();
 
             //Call the Problem and part you want to execute!
-            var result = Problem4.SolveB(list);
-            Console.WriteLine(result);
+            var result = Problem5.SolveB(list);
+            Console.WriteLine("Result:" + result);
             Console.ReadLine();
         }
 
