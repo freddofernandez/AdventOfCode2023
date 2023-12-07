@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode
+﻿using AdventOfCode2023;
+
+namespace AdventOfCode
 {
     internal class Program
     {
@@ -8,8 +10,8 @@
             var list = ReadFileAsStringList();
 
             //Call the Problem and part you want to execute!
-            Problem3.SolveB(list);
-
+            var result = Problem4.SolveB(list);
+            Console.WriteLine(result);
             Console.ReadLine();
         }
 
