@@ -53,35 +53,28 @@ namespace AdventOfCode2023
             foreach (var table in almanac.ConversionTables)
             {
                 var nextSeeds = new List<Range>();
-                foreach (var seed in seedsToIterate)
+                for(var i = 0; i < seedsToIterate.Count; i++)
                 {
+                    List<Range> leftovers = [];
                     foreach (var mapping in table)
                     {
-                        var intersection = seed.GetIntersection(mapping.MappingRange);
+                        var intersection = seedsToIterate[i].GetIntersection(mapping.MappingRange);
                         if (intersection is not null)
                         {
                             intersection.ApplyModifier(mapping.Modifier);
                             nextSeeds.Add(intersection);
-                            nextSeeds.AddRange(seed.GetLeftoversFromIntersection(mapping.MappingRange));
+                            seedsToIterate.AddRange(seedsToIterate[i].GetLeftoversFromIntersection(mapping.MappingRange));
+                            seedsToIterate[i].AlreadyParsed = true;
+                            break;
                         }
-                        else
-                        {
-                            nextSeeds.Add(seed);
-                        }
-                        
                     }
                 }
-                seedsToIterate.Clear();
+                seedsToIterate.RemoveAll(s => s.AlreadyParsed);
                 seedsToIterate.AddRange(nextSeeds);
             }
 
             var result = seedsToIterate.OrderBy(x => x.Start).First().Start;
-            Console.WriteLine("Lowest result found:" + result);
             return result;
-            // foreach list of mappings
-            // cycle each seed to check for intersections
-            // if intersection is found -> save it in seeds for next cycle
-            // after going through all intersections, get substractions and add them to next cycle as they are
         }
 
         private class Almanac
@@ -124,6 +117,8 @@ namespace AdventOfCode2023
         {
             public long Start { get; set; } = start;
             public long End { get; set; } = end;
+
+            public bool AlreadyParsed = false;
 
             public Range? GetIntersection(Range intersectingRange)
             {
