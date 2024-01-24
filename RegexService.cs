@@ -2,13 +2,11 @@
 
 namespace AdventOfCode2023
 {
-    public static class RegexService
+    public static partial class RegexService
     {
         public static List<int> GetNumbers(string input)
         {
-            string pattern = @"\d+";
-            Regex regex = new Regex(pattern);
-            var matches = regex.Matches(input);
+            var matches = RegexForNumbers().Matches(input);
 
             List<int> result = new();
 
@@ -22,12 +20,8 @@ namespace AdventOfCode2023
 
         public static List<long> GetLongNumbers(string input)
         {
-            string pattern = @"\d+";
-            Regex regex = new Regex(pattern);
-            var matches = regex.Matches(input);
-
-            List<long> result = new();
-
+            var matches = RegexForNumbers().Matches(input);
+            List<long> result = [];
             foreach (Match match in matches)
             {
                 result.Add(long.Parse(match.Value));
@@ -38,10 +32,11 @@ namespace AdventOfCode2023
 
         public static Match SingleMatchPattern(string input, string pattern)
         {
-            Regex regex = new Regex(pattern);
+            var regex = new Regex(pattern);
             return regex.Match(input);
         }
 
-
+        [GeneratedRegex(@"\d+")]
+        private static partial Regex RegexForNumbers();
     }
 }
